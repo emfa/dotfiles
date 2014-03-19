@@ -1,7 +1,7 @@
 export EDITOR="vim"
 export XDG_CONFIG_HOME="$HOME/.config"
 export TMPDIR="/tmp/$USER"
-export BSPWM_SOCKET="/$TMPDIR/bspwm-socket"
+export BSPWM_SOCKET="$TMPDIR/bspwm-socket"
 
 # Sudo alias 
 alias svim='sudo vim'
