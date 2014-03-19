@@ -1,0 +1,9 @@
+#!/usr/bin/zsh
+
+# Setup script
+# Links etc
+
+conf=$XDG_CONFIG_HOME
+
+ln -s $conf/tmux/.tmux.conf ~/.tmux.conf
+ln -s $conf/xorg/.xinitrc ~/.xinitrc

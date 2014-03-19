@@ -1,6 +1,12 @@
 export EDITOR="vim"
 export XDG_CONFIG_HOME="$HOME/.config"
+
+# Create temporary directory
 export TMPDIR="/tmp/$USER"
+if [[ ! -d $TMPDIR ]] then
+    mkdir $TMPDIR
+fi
+
 export BSPWM_SOCKET="$TMPDIR/bspwm-socket"
 
 # Sudo alias 
@@ -11,6 +17,7 @@ alias sumount='sudo mount'
 # Programs
 alias alsamixer="alsamixer -g"
 alias equalizer="alsamixer -D equal"
+alias tarx='tar -xvf'
 
 # Shortcuts
 alias rmi='rm -i'
@@ -24,11 +31,6 @@ alias .....='cd ../../../..'
 alias ......='cd ../../../../..'
 alias ll='ls -l'
 alias la='ls -la'
-
-# tar aliases
-alias tarx='tar -xvf'
-alias targz='tar -zxvf'
-alias tarbz2='tar -jxvf'
 
 #alias mkdir and cd
 function mkdircd () { mkdir -p "$@" && eval cd "\"\$$#\""; }
@@ -55,3 +57,4 @@ path=(
     ~/scripts
     $path
 )
+
