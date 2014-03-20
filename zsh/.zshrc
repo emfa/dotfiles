@@ -7,7 +7,18 @@ if [[ ! -d $TMPDIR ]] then
     mkdir $TMPDIR
 fi
 
-export BSPWM_SOCKET="$TMPDIR/bspwm-socket"
+export BSPWM_DIR="$TMPDIR/bspwm"
+export BSPWM_SOCKET="$BSPWM_DIR/socket"
+export BSPWM_TREE="$BSPWM_DIR/tree"
+export BSPWM_HISTORY="$BSPWM_DIR/history"
+export BSPWM_STACK="$BSPWM_DIR/stack"
+export BSPWM_PANEL="$BSPWM_DIR/panel"
+
+path=(
+    $HOME/bin
+    $XDG_CONFIG_HOME/scripts
+    $path
+)
 
 # Sudo alias 
 alias svim='sudo vim'
@@ -51,10 +62,4 @@ alias gmv='git mv'
 
 set -o noclobber
 set -o vi
-
-path=(
-    ~/bin
-    ~/scripts
-    $path
-)
 
