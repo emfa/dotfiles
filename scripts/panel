@@ -1,0 +1,30 @@
+#!/usr/bin/zsh
+
+if [ $(pgrep -cx panel) -gt 1 ] ; then
+	printf "%s\n" "The panel is already running." >&2
+	exit 1
+fi
+
+trap 'trap - TERM; kill 0' INT TERM QUIT EXIT
+
+flavor=${1:-bar}
+
+[ -e "$BSPWM_PANEL" ] && rm "$BSPWM_PANEL"
+mkfifo "$BSPWM_PANEL"
+
+bspc config top_padding $PANEL_HEIGHT
+
+bspc control --subscribe > "$BSPWM_PANEL" &
+xtitle -sf 'T%s' > "$BSPWM_PANEL" &
+clock -sf 'S%a %H:%M' > "$BSPWM_PANEL" &
+
+case "$flavor" in
+	bar)
+		cat "$BSPWM_PANEL" | panel_bar | bar &
+		;;
+	dzen2)
+		cat "$BSPWM_PANEL" | panel_dzen2 | dzen2 -h $PANEL_HEIGHT -dock -ta l -title-name panel -fn "${PANEL_FONT}:pixelsize=${PANEL_FONT_SIZE}" -fg "$COLOR_FOREGROUND" -bg "$COLOR_BACKGROUND" &
+		;;
+esac
+
+wait

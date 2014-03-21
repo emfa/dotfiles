@@ -1,3 +1,9 @@
 [user]
 	email = emph@emph.se
-	name = Emil Falk
+	name  = Emil Falk
+
+[push]
+	default = simple
+
+[hub]
+	protocol = https
