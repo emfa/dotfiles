@@ -1,9 +1,57 @@
-#!/usb/bin/zsh
+#!/usr/bin/zsh
 
-bspc config border_width        2
-bspc config window_gap          12
-bspc config split_ratio         0.52
-bspc config borderless_monocle  true
-bspc config gapless_monocle     true
+# Adopt orphan windows
+bspc control --adopt-orphans
+
+# Setup if multiple monitors are used
+i=1
+for monitor in $(bspc query -M); do
+bspc monitor $monitor \
+        -n "$i" \
+        -d {code,web,mail,video,music,conf,misc1,misc2,misc3,misc4}
+    let i++
+done
+NMON=$i
+unset i
+bspc config remove_disable_monitor true
+
+# General
+bspc config auto_alternate true
+bspc config auto_cancel    true
+
+# Visual
+bspc config top_padding	       $BSPWM_PANEL_HEIGHT
+bspc config border_width       1
+bspc config window_gap         4 
+bspc config split_ratio        0.50
+bspc config borderless_monocle true
+bspc config gapless_monocle    true
+
+# Pointer
+bspc config focus_follows_pointer   true
+bspc config pointer_follows_monitor true
+
+# Colors
+# Normal
+bspc config focused_border_color 	"#817267"
+bspc config active_border_color		"#504339"
+bspc config normal_border_color 	"#504339"
+bspc config presel_border_color 	"#9A875F"
+bspc config urgent_border_color 	"#504339"
+
+# Locked
+bspc config focused_locked_border_color "#817267"
+bspc config active_locked_border_color  "#504339"
+bspc config normal_locked_border_color	"#504339"
+
+# Sticky
+bspc config focused_sticky_border_color "#817267"
+bspc config active_sticky_border_color  "#504339"
+bspc config normal_sticky_border_color	"#504339"
+
+# Private
+bspc config focused_private_border_color "#817267"
+bspc config active_private_border_color  "#504339"
+bspc config normal_private_border_color	 "#504339"
 
 panel &

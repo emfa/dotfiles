@@ -1,6 +1,14 @@
 #!/usr/bin/zsh
 
 while true ; do
+
+	# Start hotkey daemon
 	sxhkd &
-	bspwm || break
+
+	# Create panel fifo
+	[ -e "$BSPWM_PANEL" ] && rm "$BSPWM_PANEL"
+	mkfifo "$BSPWM_PANEL"
+
+	# Start bspwm
+	bspwm -s "$BSPWM_PANEL" || break
 done

@@ -4,17 +4,21 @@ while read -r line ; do
 	case $line in
 		S*)
 			# clock output
-			sys_infos="\\br\\f7${line#?}"
+			sys_infos="\\br\\f7${line#S}"
 			;;
 		T*)
 			# xtitle output
-			title="\\br\\f4${line#?}"
+			title="\\br\\f4${line#T}"
+			;;
+		B*)
+			#  battery output
+			battery="\\br\\f2${line#B}"
 			;;
 		W*)
 			# bspwm internal state
 			wm_infos=""
 			IFS=':'
-			set -- ${line#?}
+			set -- ${=line}
 			while [ $# -gt 0 ] ; do
 				item=$1
 				name=${item#?}
@@ -53,5 +57,5 @@ while read -r line ; do
 			done
 			;;
 	esac
-	printf "%s\n" "\\l $wm_infos \\c $title \\r $sys_infos  "
+	printf "%s\n" "\\l $wm_infos \\c $title \\r $sys_infos | $battery  "
 done

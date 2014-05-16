@@ -3,7 +3,7 @@
 #
 
 super + alt + Escape
-	pkill -x panel; bspc quit
+	pkill -x panel; pkill -x sxhkd; bspc quit
 
 super + w
 	bspc window -c
@@ -35,7 +35,7 @@ super + m
 	bspc window -s biggest
 
 super + {_,shift + }{h,j,k,l}
-	bspc window -{f,s} {left,down,up,right}
+bspc window -{f,s} {left,down,up,right}
 
 super + {_,shift + }c
 	bspc window -f {next,prev}
