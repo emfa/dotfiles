@@ -1,211 +1,438 @@
-set nocompatible
+set nocompatible        " Must be first line
+set background=dark     " Assume a dark background
+
 filetype off
-
-" ----------------------------------------------------------------------------
-" Vundle
-" ----------------------------------------------------------------------------
 set rtp+=~/.config/vim/bundle/vundle
-let vundlepath='~/.config/vim/bundle'
-call vundle#rc(vundlepath)
-Bundle 'gmarik/vundle'
+call vundle#rc()
 
-Bundle 'marcweber/vim-addon-mw-utils'
-Bundle 'tomtom/tlib_vim'
-Bundle 'scrooloose/nerdtree'
-Bundle 'altercation/vim-colors-solarized'
-Bundle 'tpope/vim-surround'
-Bundle 'kien/ctrlp.vim'
-Bundle 'bling/vim-airline'
-Bundle 'bling/vim-bufferline'
-Bundle 'Lokaltog/vim-easymotion'
-Bundle 'jistr/vim-nerdtree-tabs'
-Bundle 'mbbill/undotree'
-Bundle 'mhinz/vim-signify'
-Bundle 'tpope/vim-abolish.git'
-Bundle 'scrooloose/syntastic'
-Bundle 'tpope/vim-fugitive'
-Bundle 'mattn/gist-vim'
-Bundle 'scrooloose/nerdcommenter'
-Bundle 'godlygeek/tabular'
-Bundle 'majutsushi/tagbar'
-Bundle 'garbas/vim-snipmate'
-Bundle 'honza/vim-snippets'
-Bundle 'tpope/vim-markdown'
-Bundle 'ervandew/supertab'
-Bundle 'jimenezrick/vimerl'
-Bundle 'edkolev/erlang-motions.vim'
-Bundle 'elixir-lang/vim-elixir'
+Plugin 'gmarik/vundle'
+Plugin 'MarcWeber/vim-addon-mw-utils'
+Plugin 'tomtom/tlib_vim'
+Plugin 'mileszs/ack.vim'
+Plugin 'scrooloose/nerdtree'
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'spf13/vim-colors'
+Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-repeat'
+Plugin 'spf13/vim-autoclose'
+Plugin 'kien/ctrlp.vim'
+Plugin 'tacahiroy/ctrlp-funky'
+Plugin 'terryma/vim-multiple-cursors'
+Plugin 'vim-scripts/sessionman.vim'
+Plugin 'matchit.zip'
+Plugin 'bling/vim-airline'
+Plugin 'bling/vim-bufferline'
+Plugin 'Lokaltog/vim-easymotion'
+Plugin 'godlygeek/csapprox'
+Plugin 'jistr/vim-nerdtree-tabs'
+Plugin 'flazz/vim-colorschemes'
+Plugin 'mbbill/undotree'
+Plugin 'mhinz/vim-signify'
+Plugin 'tpope/vim-abolish.git'
+Plugin 'osyo-manga/vim-over'
+Plugin 'kana/vim-textobj-user'
+Plugin 'kana/vim-textobj-indent'
+Plugin 'gcmt/wildfire.vim'
+Plugin 'scrooloose/syntastic'
+Plugin 'tpope/vim-fugitive'
+Plugin 'mattn/gist-vim'
+Plugin 'scrooloose/nerdcommenter'
+Plugin 'godlygeek/tabular'
+Plugin 'majutsushi/tagbar'
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'SirVer/ultisnips'
+Plugin 'honza/vim-snippets'
+Plugin 'elzr/vim-json'
+Plugin 'tpope/vim-markdown'
+Plugin 'spf13/vim-preview'
+Plugin 'tpope/vim-cucumber'
+Plugin 'quentindecock/vim-cucumber-align-pipes'
+Plugin 'jimenezrick/vimerl'
+Plugin 'edkolev/erlang-motions.vim'
+Plugin 'travitch/hasksyn'
+Plugin 'dag/vim2hs'
+Plugin 'Twinside/vim-haskellConceal'
+Plugin 'Twinside/vim-haskellFold'
+Plugin 'lukerandall/haskellmode-vim'
+Plugin 'eagletmt/neco-ghc'
+Plugin 'eagletmt/ghcmod-vim'
+Plugin 'Shougo/vimproc'
+Plugin 'adinapoli/cumino'
+Plugin 'bitc/vim-hdevtools'
 
-" ----------------------------------------------------------------------------
-" Syntax highlighting
-" ----------------------------------------------------------------------------
-syntax on
-filetype plugin on
-filetype plugin indent on
+call vundle#end()
 
-" ----------------------------------------------------------------------------
-" Color theme
-" ----------------------------------------------------------------------------
-set background=dark
-color solarized
+filetype plugin indent on   " Automatically detect file types.
+syntax on                   " Syntax highlighting
+set mouse=a                 " Automatically enable mouse usage
+set mousehide               " Hide the mouse cursor while typing
+scriptencoding utf-8
 
-" ----------------------------------------------------------------------------
-" Searching
-" ----------------------------------------------------------------------------
-set hlsearch
-set incsearch
-set ignorecase
-set smartcase
+set clipboard=unnamed,unnamedplus
 
-" ----------------------------------------------------------------------------
-" Tabs and indenting
-" ----------------------------------------------------------------------------
-set expandtab
-set tabstop=4
-set shiftwidth=4
-set softtabstop=4
-set smartindent
+set shortmess+=filmnrxoOtT          " Abbrev. of messages (avoids 'hit enter')
+set viewoptions=folds,options,cursor,unix,slash " Better Unix / Windows compatibility
+set virtualedit=onemore             " Allow for cursor beyond last character
+set history=1000                    " Store a ton of history (default is 20)
+set spell                           " Spell checking on
+set hidden                          " Allow buffer switching without saving
+set iskeyword-=.                    " '.' is an end of word designator
+set iskeyword-=#                    " '#' is an end of word designator
+set iskeyword-=-                    " '-' is an end of word designator
 
-" ----------------------------------------------------------------------------
-" UI
-" ----------------------------------------------------------------------------
+au FileType gitcommit au! BufEnter COMMIT_EDITMSG call setpos('.', [0, 1, 1, 0])
+
+set backup                  " Backups are nice ...
+set undofile                " So is persistent undo ...
+set undolevels=1000         " Maximum number of changes that can be undone
+set undoreload=10000        " Maximum number lines to save for undo on a buffer reload
+
+let g:solarized_termcolors=256
+let g:solarized_termtrans=1
+let g:solarized_contrast="normal"
+let g:solarized_visibility="normal"
+color solarized             " Load a colorscheme
+set background=dark         " Assume a dark background
+
+set tabpagemax=15               " Only show 15 tabs
+set showmode                    " Display the current mode
+
+set cursorline                  " Highlight current line
+
+highlight clear SignColumn      " SignColumn should match background
+highlight clear LineNr          " Current line number row will have same background color in relative mode
+let g:CSApprox_hook_post = ['hi clear SignColumn']
+
+set ruler                   " Show the ruler
+set rulerformat=%30(%=\:b%n%y%m%r%w\ %l,%c%V\ %P%) " A ruler on steroids
+set showcmd                 " Show partial commands in status line and
+                            " Selected characters/lines in visual mode
+
 set laststatus=2
-set ruler
-set showcmd
 
-set showmode
-set hidden
+set statusline=%<%f\                     " Filename
+set statusline+=%w%h%m%r                 " Options
+set statusline+=%{fugitive#statusline()} " Git Hotness
+set statusline+=\ [%{&ff}/%Y]            " Filetype
+set statusline+=\ [%{getcwd()}]          " Current dir
+set statusline+=%=%-14.(%l,%c%V%)\ %p%%  " Right aligned file nav info
 
-set previewheight=20
-set pumheight=20
+set backspace=indent,eol,start  " Backspace for dummies
+set linespace=0                 " No extra spaces between rows
+set nu                          " Line numbers on
+set showmatch                   " Show matching brackets/parenthesis
+set incsearch                   " Find as you type search
+set hlsearch                    " Highlight search terms
+set winminheight=0              " Windows can be 0 line high
+set ignorecase                  " Case insensitive search
+set smartcase                   " Case sensitive when uc present
+set wildmenu                    " Show list instead of just completing
+set wildmode=list:longest,full  " Command <Tab> completion, list matches, then longest common part, then all.
+set whichwrap=b,s,h,l,<,>,[,]   " Backspace and cursor keys wrap too
+set scrolljump=5                " Lines to scroll when cursor leaves screen
+set scrolloff=3                 " Minimum lines to keep above and below cursor
+set foldenable                  " Auto fold code
+set list
+set listchars=tab:›\ ,trail:•,extends:#,nbsp:. " Highlight problematic whitespace
 
-set wildmenu
-set completeopt=menu,longest,menuone
+set nowrap                      " Do not wrap long lines
+set autoindent                  " Indent at the same level of the previous line
+set shiftwidth=4                " Use indents of 4 spaces
+set expandtab                   " Tabs are spaces, not tabs
+set tabstop=4                   " An indentation every four columns
+set softtabstop=4               " Let backspace delete indent
+set nojoinspaces                " Prevents inserting two spaces after punctuation on a join (J)
+set splitright                  " Puts new vsplit windows to the right of the current
+set splitbelow                  " Puts new split windows to the bottom of the current
+set pastetoggle=<F12>           " pastetoggle (sane indentation on pastes)
 
-set cursorline
+autocmd FileType c,cpp,erlang,java,go,php,javascript,python,twig,xml,yml,perl autocmd BufWritePre <buffer> call StripTrailingWhitespace()
+autocmd FileType haskell setlocal expandtab shiftwidth=2 softtabstop=2
 
-set number
-set relativenumber
-set nowrap
-set so=10
 
-set mouse=nicr
+autocmd FileType haskell setlocal commentstring=--\ %s
+autocmd FileType haskell setlocal nospell
 
-set ttyfast
+let mapleader = ','
+let maplocalleader = '_'
 
-" ----------------------------------------------------------------------------
-" Clipboard
-" ----------------------------------------------------------------------------
-if has('unnamedplus')
-    set clipboard=unnamedplus
-else
-    set clipboard=unnamed
-endif
+map <C-J> <C-W>j<C-W>_
+map <C-K> <C-W>k<C-W>_
+map <C-L> <C-W>l<C-W>_
+map <C-H> <C-W>h<C-W>_
 
-" ----------------------------------------------------------------------------
-" Folding
-" ----------------------------------------------------------------------------
-set nofoldenable
-set foldnestmax=3
+noremap j gj
+noremap k gk
 
-" ----------------------------------------------------------------------------
-" Files
-" ----------------------------------------------------------------------------
-set encoding=utf-8
-set nobackup
-set nowritebackup
-set modeline
-set noswapfile
-set undofile
-set undodir=~/.config/vim/.undo
-"set wildignore+=*.mp3,*.MP3,*.ogg,*.mp4,*.wav,*.avi,*.AVI,*.wmv,*.m4a,*.mkv,*.png.*.jpg,*.jpeg,*.pdf
+function! WrapRelativeMotion(key, ...)
+    let vis_sel=""
+    if a:0
+        let vis_sel="gv"
+    endif
+    if &wrap
+        execute "normal!" vis_sel . "g" . a:key
+    else
+        execute "normal!" vis_sel . a:key
+    endif
+endfunction
 
-" ----------------------------------------------------------------------------
-" Mappings
-" ----------------------------------------------------------------------------
+noremap $ :call WrapRelativeMotion("$")<CR>
+noremap <End> :call WrapRelativeMotion("$")<CR>
+noremap 0 :call WrapRelativeMotion("0")<CR>
+noremap <Home> :call WrapRelativeMotion("0")<CR>
+noremap ^ :call WrapRelativeMotion("^")<CR>
+onoremap $ v:call WrapRelativeMotion("$")<CR>
+onoremap <End> v:call WrapRelativeMotion("$")<CR>
+vnoremap $ :<C-U>call WrapRelativeMotion("$", 1)<CR>
+vnoremap <End> :<C-U>call WrapRelativeMotion("$", 1)<CR>
+vnoremap 0 :<C-U>call WrapRelativeMotion("0", 1)<CR>
+vnoremap <Home> :<C-U>call WrapRelativeMotion("0", 1)<CR>
+vnoremap ^ :<C-U>call WrapRelativeMotion("^", 1)<CR>
 
-let mapleader=","
+map <S-H> gT
+map <S-L> gt
 
-" indent code
-nnoremap <leader>i gg=G<C-o><C-o>
+command! -bang -nargs=* -complete=file E e<bang> <args>
+command! -bang -nargs=* -complete=file W w<bang> <args>
+command! -bang -nargs=* -complete=file Wq wq<bang> <args>
+command! -bang -nargs=* -complete=file WQ wq<bang> <args>
+command! -bang Wa wa<bang>
+command! -bang WA wa<bang>
+command! -bang Q q<bang>
+command! -bang QA qa<bang>
+command! -bang Qa qa<bang>
 
-" Goto "definition"
-map <Leader>d <C-]>
+cmap Tabe tabe
 
-" Toggle paste mode with F2
-nnoremap <F12> :set invpaste paste?<CR>
+nnoremap Y y$
 
-" Move between windows with CRTL+{hjkl}
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-l> <C-w>l
-nnoremap <C-h> <C-w>h
+nmap <leader>f0 :set foldlevel=0<CR>
+nmap <leader>f1 :set foldlevel=1<CR>
+nmap <leader>f2 :set foldlevel=2<CR>
+nmap <leader>f3 :set foldlevel=3<CR>
+nmap <leader>f4 :set foldlevel=4<CR>
+nmap <leader>f5 :set foldlevel=5<CR>
+nmap <leader>f6 :set foldlevel=6<CR>
+nmap <leader>f7 :set foldlevel=7<CR>
+nmap <leader>f8 :set foldlevel=8<CR>
+nmap <leader>f9 :set foldlevel=9<CR>
 
-" Buffer movement
-noremap <silent> H :bp<CR>
-noremap <silent> L :bn<CR>
+nmap <silent> <leader>/ :set invhlsearch<CR>
 
-nnoremap <c-s> :w<CR>
+map <leader>fc /\v^[<\|=>]( .*\|$)<CR>
 
-" Resize Windows with arrow keys
-noremap <up> 2<c-w>+
-noremap <down> 2<c-w>-
-noremap <left> 3<c-w><
-noremap <right> 3<c-w>>
+cmap cwd lcd %:p:h
+cmap cd. lcd %:p:h
 
-" Surround current char with spaces
-noremap S i <esc>2li <esc>h
-
-" Folding
-nnoremap <space> za
-vnoremap <space> zf
-
-" Improve up/down movement on wrapped lines
-nnoremap j gj
-nnoremap k gk
-
-"nnoremap n nzz
-"nnoremap N Nzz
-
-" Reselect visual block after indent
 vnoremap < <gv
 vnoremap > >gv
 
-" Splits
-nnoremap <leader>sv :vsplit<CR>
-nnoremap <leader>sh :split<CR>
+vnoremap . :normal .<CR>
 
-" Use Q for formatting the current paragraph (or selection)
-vmap Q gq
-nmap Q mpgqap`p
+cmap w!! w !sudo tee % >/dev/null
 
-" Make Y consistent with C and D
-nnoremap Y y$
+cnoremap %% <C-R>=expand('%:h').'/'<cr>
+map <leader>ew :e %%
+map <leader>es :sp %%
+map <leader>ev :vsp %%
+map <leader>et :tabe %%
 
-" Fugitive maps
-noremap <Leader>gs :Gstatus<CR>
-noremap <Leader>gc :Gcommit<CR>
-noremap <Leader>gd :Gdiff<CR>
-noremap <Leader>gw :Gwrite<CR>
-noremap <Leader>gr :Gread<CR>
+map <Leader>= <C-w>=
 
-" Toggle search highlighting
-nnoremap <Leader><Space> :noh<CR>
+nmap <Leader>ff [I:let nr = input("Which one: ")<Bar>exe "normal " . nr ."[\t"<CR>
 
-nmap <F3> :NERDTreeToggle<CR>
+map zl zL
+map zh zH
 
-nnoremap <C-t> :CtrlPBuffer<CR>
-nnoremap <C-g> :CtrlPFunky<CR>
+nnoremap <silent> <leader>q gwip
 
-imap jj <Esc>
+map <silent> <F11> :call system("wmctrl -ir " . v:windowid . " -b toggle,fullscreen")<CR>
 
-" ----------------------------------------------------------------------------
-" Plugin settings
-" ----------------------------------------------------------------------------
+let g:NERDShutUp=1
+let b:match_ignorecase = 1
 
-" ----------------------------------------------------------------------------
-" Commands
-" ----------------------------------------------------------------------------
+set tags=./tags;/,~/.vimtags
 
-" use :W to force saving a file
-com! W :w !sudo tee %
+let gitroot = substitute(system('git rev-parse --show-toplevel'), '[\n\r]', '', 'g')
+if gitroot != ''
+    let &tags = &tags . ',' . gitroot . '/.git/tags'
+endif
+
+au FileType xhtml,xml ru ftplugin/html/autoclosetag.vim
+nmap <Leader>ac <Plug>ToggleAutoCloseMappings
+
+map <C-e> <plug>NERDTreeTabsToggle<CR>
+map <leader>e :NERDTreeFind<CR>
+nmap <leader>nt :NERDTreeFind<CR>
+
+let NERDTreeShowBookmarks=1
+let NERDTreeIgnore=['\.pyc', '\~$', '\.swo$', '\.swp$', '\.git', '\.hg', '\.svn', '\.bzr']
+let NERDTreeChDirMode=0
+let NERDTreeQuitOnOpen=1
+let NERDTreeMouseMode=2
+let NERDTreeShowHidden=1
+let NERDTreeKeepTreeInNewTab=1
+let g:nerdtree_tabs_open_on_gui_startup=0
+
+nmap <Leader>a& :Tabularize /&<CR>
+vmap <Leader>a& :Tabularize /&<CR>
+nmap <Leader>a= :Tabularize /=<CR>
+vmap <Leader>a= :Tabularize /=<CR>
+nmap <Leader>a: :Tabularize /:<CR>
+vmap <Leader>a: :Tabularize /:<CR>
+nmap <Leader>a:: :Tabularize /:\zs<CR>
+vmap <Leader>a:: :Tabularize /:\zs<CR>
+nmap <Leader>a, :Tabularize /,<CR>
+vmap <Leader>a, :Tabularize /,<CR>
+nmap <Leader>a,, :Tabularize /,\zs<CR>
+vmap <Leader>a,, :Tabularize /,\zs<CR>
+nmap <Leader>a<Bar> :Tabularize /<Bar><CR>
+vmap <Leader>a<Bar> :Tabularize /<Bar><CR>
+
+set sessionoptions=blank,buffers,curdir,folds,tabpages,winsize
+nmap <leader>sl :SessionList<CR>
+nmap <leader>ss :SessionSave<CR>
+nmap <leader>sc :SessionClose<CR>
+
+nmap <leader>jt <Esc>:%!python -m json.tool<CR><Esc>:set filetype=json<CR>
+let g:vim_json_syntax_conceal = 0 
+
+let g:ctrlp_working_path_mode = 'ra'
+nnoremap <silent> <D-t> :CtrlP<CR>
+nnoremap <silent> <D-r> :CtrlPMRU<CR>
+let g:ctrlp_custom_ignore = {
+    \ 'dir':  '\.git$\|\.hg$\|\.svn$',
+    \ 'file': '\.exe$\|\.so$\|\.dll$\|\.pyc$' }
+let s:ctrlp_fallback = 'ack %s --nocolor -f'
+let g:ctrlp_user_command = {
+    \ 'types': {
+        \ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others'],
+        \ 2: ['.hg', 'hg --cwd %s locate -I .'] },
+    \ 'fallback': s:ctrlp_fallback }
+let g:ctrlp_extensions = ['funky']
+nnoremap <Leader>fu :CtrlPFunky<Cr>
+
+nnoremap <silent> <leader>tt :TagbarToggle<CR>
+let g:tagbar_type_go = {
+\ 'ctagstype' : 'go',
+\ 'kinds'     : [  'p:package', 'i:imports:1', 'c:constants', 'v:variables',
+    \ 't:types',  'n:interfaces', 'w:fields', 'e:embedded', 'm:methods',
+    \ 'r:constructor', 'f:functions' ],
+\ 'sro' : '.',
+\ 'kind2scope' : { 't' : 'ctype', 'n' : 'ntype' },
+\ 'scope2kind' : { 'ctype' : 't', 'ntype' : 'n' },
+\ 'ctagsbin'  : 'gotags',
+\ 'ctagsargs' : '-sort -silent' }
+
+nnoremap <silent> <leader>gs :Gstatus<CR>
+nnoremap <silent> <leader>gd :Gdiff<CR>
+nnoremap <silent> <leader>gc :Gcommit<CR>
+nnoremap <silent> <leader>gb :Gblame<CR>
+nnoremap <silent> <leader>gl :Glog<CR>
+nnoremap <silent> <leader>gp :Git push<CR>
+nnoremap <silent> <leader>gr :Gread<CR>
+nnoremap <silent> <leader>gw :Gwrite<CR>
+nnoremap <silent> <leader>ge :Gedit<CR>
+nnoremap <silent> <leader>gi :Git add -p %<CR>
+nnoremap <silent> <leader>gg :SignifyToggle<CR>
+
+let g:acp_enableAtStartup = 0
+
+let g:ycm_collect_identifiers_from_tags_files = 1
+
+let g:UltiSnipsExpandTrigger = '<C-j>'
+let g:UltiSnipsJumpForwardTrigger = '<C-j>'
+let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
+
+autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
+autocmd BufWritePost *.hs GhcModCheckAndLintAsync
+
+set conceallevel=2 concealcursor=i
+set completeopt-=preview
+
+autocmd BufWritePost *.hs GhcModCheckAndLintAsync
+
+nnoremap <Leader>u :UndotreeToggle<CR>
+let g:undotree_SetFocusWhenToggle=1
+
+let g:wildfire_objects = {
+        \ "*" : ["i'", 'i"', "i)", "i]", "i", "ip"],
+        \ "html,xml" : ["at"] }
+
+let g:airline_theme = 'solarized'
+let g:airline_left_sep='›'  " Slightly fancier than '>'
+let g:airline_right_sep='‹' " Slightly fancier than '<'
+
+function! InitializeDirectories()
+    let parent = $HOME
+    let prefix = 'vim'
+    let dir_list = {
+                \ 'backup': 'backupdir',
+                \ 'views': 'viewdir',
+                \ 'swap': 'directory' }
+
+    let dir_list['undo'] = 'undodir'
+
+    let common_dir = parent . '/.' . prefix
+
+    for [dirname, settingname] in items(dir_list)
+        let directory = common_dir . dirname . '/'
+        if exists("*mkdir")
+            if !isdirectory(directory)
+                call mkdir(directory)
+            endif
+        endif
+        if !isdirectory(directory)
+            echo "Warning: Unable to create backup directory: " . directory
+            echo "Try: mkdir -p " . directory
+        else
+            let directory = substitute(directory, " ", "\\\\ ", "g")
+            exec "set " . settingname . "=" . directory
+        endif
+    endfor
+endfunction
+call InitializeDirectories()
+
+function! NERDTreeInitAsNeeded()
+    redir => bufoutput
+    buffers!
+    redir END
+    let idx = stridx(bufoutput, "NERD_tree")
+    if idx > -1
+        NERDTreeMirror
+        NERDTreeFind
+        wincmd l
+    endif
+endfunction
+
+function! StripTrailingWhitespace()
+    " Preparation: save last search, and cursor position.
+    let _s=@/
+    let l = line(".")
+    let c = col(".")
+    " do the business:
+    %s/\s\+$//e
+    " clean up: restore previous search history, and cursor position
+    let @/=_s
+    call cursor(l, c)
+endfunction
+
+function! s:RunShellCommand(cmdline)
+    botright new
+
+    setlocal buftype=nofile
+    setlocal bufhidden=delete
+    setlocal nobuflisted
+    setlocal noswapfile
+    setlocal nowrap
+    setlocal filetype=shell
+    setlocal syntax=shell
+
+    call setline(1, a:cmdline)
+    call setline(2, substitute(a:cmdline, '.', '=', 'g'))
+    execute 'silent $read !' . escape(a:cmdline, '%#')
+    setlocal nomodifiable
+    1
+endfunction
+
+command! -complete=file -nargs=+ Shell call s:RunShellCommand(<q-args>)

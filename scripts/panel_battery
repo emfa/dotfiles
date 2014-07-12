@@ -1,0 +1,15 @@
+#!/usr/bin/zsh
+
+# Battery bar
+
+interval=5
+battery_dir='/sys/class/power_supply/BAT0'
+
+while true ; do
+	battery_capacity=$(cat "$battery_dir/capacity")
+	battery_status=$(cat "$battery_dir/status")
+
+	echo "B$battery_capacity $battery_status"
+
+	sleep $interval
+done
