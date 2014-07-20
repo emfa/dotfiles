@@ -41,4 +41,8 @@ TEXT
 TIME${time %R}
 DATE${time %y/%m/%d}
 BATSTAT$battery_short
-BATBAR${battery_bar 1,5}
+BATPERC$battery_percent
+CPU$cpu
+MEM$memperc
+VOL$mixer
+NET${wireless_link_qual_perc wlp2s0}

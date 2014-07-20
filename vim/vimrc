@@ -71,7 +71,6 @@ set shortmess+=filmnrxoOtT          " Abbrev. of messages (avoids 'hit enter')
 set viewoptions=folds,options,cursor,unix,slash " Better Unix / Windows compatibility
 set virtualedit=onemore             " Allow for cursor beyond last character
 set history=1000                    " Store a ton of history (default is 20)
-set spell                           " Spell checking on
 set hidden                          " Allow buffer switching without saving
 set iskeyword-=.                    " '.' is an end of word designator
 set iskeyword-=#                    " '#' is an end of word designator
@@ -84,10 +83,10 @@ set undofile                " So is persistent undo ...
 set undolevels=1000         " Maximum number of changes that can be undone
 set undoreload=10000        " Maximum number lines to save for undo on a buffer reload
 
+let g:solarized_termcolors=256
 let g:solarized_termtrans=1
-let g:solarized_visibility="high"
-color solarized             " Load a colorscheme
 set background=dark         " Assume a dark background
+color solarized             " Load a colorscheme
 
 set tabpagemax=15               " Only show 15 tabs
 set showmode                    " Display the current mode
@@ -266,7 +265,7 @@ let NERDTreeShowHidden=1
 let NERDTreeKeepTreeInNewTab=1
 let g:nerdtree_tabs_open_on_gui_startup=0
 
-let g:signify_disable_by_default = 0
+let g:signify_disable_by_default = 1
 
 nmap <Leader>aa :Tabularize /-><CR>
 vmap <Leader>aa :Tabularize /-><CR>
