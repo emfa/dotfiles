@@ -1,11 +1,9 @@
 set nocompatible        " Must be first line
-set background=dark     " Assume a dark background
-
 filetype off
-set rtp+=~/.config/vim/bundle/vundle
-call vundle#rc()
+set rtp+=~/.config/vim/bundle/Vundle.vim
+call vundle#begin('~/.config/vim/bundle')
 
-Plugin 'gmarik/vundle'
+Plugin 'gmarik/Vundle.vim'
 Plugin 'MarcWeber/vim-addon-mw-utils'
 Plugin 'tomtom/tlib_vim'
 Plugin 'mileszs/ack.vim'
@@ -14,7 +12,6 @@ Plugin 'altercation/vim-colors-solarized'
 Plugin 'spf13/vim-colors'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-repeat'
-Plugin 'spf13/vim-autoclose'
 Plugin 'kien/ctrlp.vim'
 Plugin 'tacahiroy/ctrlp-funky'
 Plugin 'terryma/vim-multiple-cursors'
@@ -87,17 +84,13 @@ set undofile                " So is persistent undo ...
 set undolevels=1000         " Maximum number of changes that can be undone
 set undoreload=10000        " Maximum number lines to save for undo on a buffer reload
 
-let g:solarized_termcolors=256
 let g:solarized_termtrans=1
-let g:solarized_contrast="normal"
-let g:solarized_visibility="normal"
+let g:solarized_visibility="high"
 color solarized             " Load a colorscheme
 set background=dark         " Assume a dark background
 
 set tabpagemax=15               " Only show 15 tabs
 set showmode                    " Display the current mode
-
-set cursorline                  " Highlight current line
 
 highlight clear SignColumn      " SignColumn should match background
 highlight clear LineNr          " Current line number row will have same background color in relative mode
@@ -149,12 +142,16 @@ set pastetoggle=<F12>           " pastetoggle (sane indentation on pastes)
 autocmd FileType c,cpp,erlang,java,go,php,javascript,python,twig,xml,yml,perl autocmd BufWritePre <buffer> call StripTrailingWhitespace()
 autocmd FileType haskell setlocal expandtab shiftwidth=2 softtabstop=2
 
-
 autocmd FileType haskell setlocal commentstring=--\ %s
 autocmd FileType haskell setlocal nospell
 
 let mapleader = ','
 let maplocalleader = '_'
+
+nnoremap <Left> :vertical resize +5<CR>
+nnoremap <Right> :vertical resize -5<CR>
+nnoremap <Up> :resize +5<CR>
+nnoremap <Down> :resize -5<CR>
 
 map <C-J> <C-W>j<C-W>_
 map <C-K> <C-W>k<C-W>_
@@ -246,8 +243,6 @@ map zh zH
 
 nnoremap <silent> <leader>q gwip
 
-map <silent> <F11> :call system("wmctrl -ir " . v:windowid . " -b toggle,fullscreen")<CR>
-
 let g:NERDShutUp=1
 let b:match_ignorecase = 1
 
@@ -258,15 +253,12 @@ if gitroot != ''
     let &tags = &tags . ',' . gitroot . '/.git/tags'
 endif
 
-au FileType xhtml,xml ru ftplugin/html/autoclosetag.vim
-nmap <Leader>ac <Plug>ToggleAutoCloseMappings
-
 map <C-e> <plug>NERDTreeTabsToggle<CR>
 map <leader>e :NERDTreeFind<CR>
 nmap <leader>nt :NERDTreeFind<CR>
 
 let NERDTreeShowBookmarks=1
-let NERDTreeIgnore=['\.pyc', '\~$', '\.swo$', '\.swp$', '\.git', '\.hg', '\.svn', '\.bzr']
+let NERDTreeIgnore=['\.pyc', '\~$', '\.swo$', '\.swp$', '\.git', '\.hg', '\.svn', '\.bzr', '\.beam']
 let NERDTreeChDirMode=0
 let NERDTreeQuitOnOpen=1
 let NERDTreeMouseMode=2
@@ -274,6 +266,10 @@ let NERDTreeShowHidden=1
 let NERDTreeKeepTreeInNewTab=1
 let g:nerdtree_tabs_open_on_gui_startup=0
 
+let g:signify_disable_by_default = 0
+
+nmap <Leader>aa :Tabularize /-><CR>
+vmap <Leader>aa :Tabularize /-><CR>
 nmap <Leader>a& :Tabularize /&<CR>
 vmap <Leader>a& :Tabularize /&<CR>
 nmap <Leader>a= :Tabularize /=<CR>
@@ -298,11 +294,11 @@ nmap <leader>jt <Esc>:%!python -m json.tool<CR><Esc>:set filetype=json<CR>
 let g:vim_json_syntax_conceal = 0 
 
 let g:ctrlp_working_path_mode = 'ra'
-nnoremap <silent> <D-t> :CtrlP<CR>
-nnoremap <silent> <D-r> :CtrlPMRU<CR>
+nnoremap <silent> <C-t> :CtrlP<CR>
+nnoremap <silent> <C-r> :CtrlPMRU<CR>
 let g:ctrlp_custom_ignore = {
     \ 'dir':  '\.git$\|\.hg$\|\.svn$',
-    \ 'file': '\.exe$\|\.so$\|\.dll$\|\.pyc$' }
+    \ 'file': '\.exe$\|\.so$\|\.dll$\|\.pyc$\|\.beam&' }
 let s:ctrlp_fallback = 'ack %s --nocolor -f'
 let g:ctrlp_user_command = {
     \ 'types': {

@@ -1,0 +1,48 @@
+#!/usr/bin/zsh
+
+# Set cursor
+xsetroot -cursor_name=left_ptr
+
+# Set background
+feh --bg-fill "$XDG_CONFIG_HOME/wallpapers/current"
+
+# Source Xresources
+xrdb -merge "$XDG_CONFIG_HOME/xorg/Xresources"
+
+# Run xmodmap
+xmodmap "$XDG_CONFIG_HOME/xorg/xmodmap"
+
+# Sync clipboard
+autocutsel -fork &
+autocutsel -selection PRIMARY -fork &
+
+# Create bspwm temporary directory
+export BSPWM_DIR="$TMPDIR/bspwm"
+if [[ ! -d $BSPWM_DIR ]] then
+    mkdir $BSPWM_DIR
+fi
+
+# BSPWM configuration
+export BSPWM_SOCKET="$BSPWM_DIR/socket"
+export BSPWM_TREE="$BSPWM_DIR/tree"
+export BSPWM_HISTORY="$BSPWM_DIR/history"
+export BSPWM_STACK="$BSPWM_DIR/stack"
+
+# Panel
+export BSPWM_PANEL="$BSPWM_DIR/panel"
+export BSPWM_PANEL_HEIGHT=18
+
+# Start programs
+
+compton -b &
+
+unclutter -idle 3 &
+
+st &
+st &
+st -e vim &
+
+firefox &
+
+# Execute window manager
+exec wm

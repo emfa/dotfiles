@@ -1,0 +1,19 @@
+setup_links () {
+    print "# $app # Linking config files..." 
+
+    for link in $links; do
+        tmp=("${(s/:/)link}")
+        file_name=$tmp[1]
+        file=$XDG_CONFIG_HOME/$app/$file_name
+        type=$tmp[2]
+
+        if [[ $type == "standard" ]]; then
+    	    dest="$HOME/.$file_name"
+        else
+    	    dest=$type
+        fi
+
+        ln -s $file $dest
+        print "# $app # Linked $file to $dest"
+    done
+}

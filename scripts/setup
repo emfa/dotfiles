@@ -1,0 +1,15 @@
+#!/usr/bin/zsh
+
+# Setup script
+
+config_dir=$XDG_CONFIG_HOME
+fpath=($config_dir/functions
+       $fpath)
+autoload -Uz setup_links
+
+# Invoke individual setup files
+for f in $(ls $config_dir/*/setup.zsh); do
+    app=$(basename $(dirname $f))
+    print "# Invoking setup for $app"
+    . $f
+done

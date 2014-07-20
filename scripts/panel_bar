@@ -1,61 +1,153 @@
 #!/usr/bin/zsh
+#
+# Example panel for LemonBoy's bar
+
+COLOR_FOREGROUND=$fg
+COLOR_BACKGROUND=$bg
+COLOR_FOCUSED_OCCUPIED_FG=$blue
+COLOR_FOCUSED_OCCUPIED_BG=$bg
+COLOR_FOCUSED_FREE_FG=$magenta
+COLOR_FOCUSED_FREE_BG=$bg
+COLOR_FOCUSED_URGENT_FG=$blue
+COLOR_FOCUSED_URGENT_BG=$orange
+COLOR_OCCUPIED_FG=$violet
+COLOR_OCCUPIED_BG=$bg
+COLOR_FREE_FG=$fg
+COLOR_FREE_BG=$bg
+COLOR_URGENT_FG=$yellow
+COLOR_URGENT_BG=$red
+COLOR_LAYOUT_FG=$blue
+COLOR_LAYOUT_BG=$bg
+COLOR_TITLE_FG=$blue
+COLOR_TITLE_BG=$bg
+COLOR_STATUS_FG=$blue
+COLOR_STATUS_BG=$bg
+COLOR_SEP_FG=$yellow
+COLOR_SET_BG=$bg
+COLOR_BAT_FULL_FG=$blue
+COLOR_BAT_FULL_BG=$bg
+COLOR_BAT_DISC_FG=$red
+COLOR_BAT_DISC_BG=$bg
+COLOR_BAT_CHAR_FG=$green
+COLOR_BAT_CHAR_BG=$bg
+COLOR_BAT_NOTP_FG=$red
+COLOR_BAT_NOTP_BG=$bg
+COLOR_BAT_EMPT_FG=$yellow
+COLOR_BAT_EMPT_BG=$red
+COLOR_BAT_UNKN_FG=$yellow
+COLOR_BAT_UNKN_BG=$bg
+
+bat_icon="«=»×?"
+
+lsep="%{F$COLOR_SEP_FG}%{B$COLOR_SEP_BG}<"
+rsep="%{F$COLOR_SEP_FG}%{B$COLOR_SEP_BG}>"
+csep="%{F$COLOR_SEP_FG}%{B$COLOR_SEP_BG}×"
 
 while read -r line ; do
 	case $line in
-		S*)
-			# clock output
-			sys_infos="\\br\\f7${line#S}"
+		TIME*)
+			# clock
+			time="%{F$COLOR_STATUS_FG}%{B$COLOR_STATUS_BG}${line#TIME}"
 			;;
-		T*)
-			# xtitle output
-			title="\\br\\f4${line#T}"
+        DATE*)
+            # date
+            date="%{F$COLOR_STATUS_FG}%{B$COLOR_STATUS_BG}${line#DATE}"
+            ;;
+		TITLE*)
+			# title
+			title="%{F$COLOR_TITLE_FG}%{B$COLOR_TITLE_BG}${line#TITLE}"
+            title="$lsep $title $rsep"
 			;;
-		B*)
-			#  battery output
-			battery="\\br\\f2${line#B}"
-			;;
+        BATSTAT*)
+            # battery status
+            case ${${line#BATSTAT}[1]} in
+                F)
+                    batfg=$COLOR_BAT_FULL_FG
+                    batbg=$COLOR_BAT_FULL_BG
+                    baticon=2
+                    ;;
+                C)
+                    batfg=$COLOR_BAT_CHAR_FG
+                    batbg=$COLOR_BAT_CHAR_BG
+                    baticon=3
+                    ;;
+                D)
+                    batfg=$COLOR_BAT_DISC_FG
+                    batbg=$COLOR_BAT_DISC_BG
+                    baticon=1
+                    ;;
+                E)
+                    batfg=$COLOR_BAT_EMPT_FG
+                    batbg=$COLOR_BAT_EMPT_BG
+                    baticon=1
+                    batbar="     "
+                    ;;
+                N)
+                    batfg=$COLOR_BAT_NOTP_FG
+                    batbg=$COLOR_BAT_NOTP_BG
+                    baticon=4
+                    ;;
+                U)
+                    batfg=$COLOR_BAT_UNKN_FG
+                    batbg=$COLOR_BAT_UNKN_BG
+                    baticon=5
+                    ;;
+            esac
+            ;;
+        BATBAR*)
+            # battery bar
+            batbar=${line#BATBAR}
+            batbar=${(r:5:: :)${batbar//\#/$bat_icon[$baticon]}}
+            ;;
 		W*)
 			# bspwm internal state
 			wm_infos=""
-			IFS=':'
-			set -- ${=line}
+            set -- ${(s/:/)line#W}
 			while [ $# -gt 0 ] ; do
 				item=$1
 				name=${item#?}
 				case $item in
+                    M*)
+                        monitor="$name"
+                        ;;
 					O*)
 						# focused occupied desktop
-						wm_infos="$wm_infos \\u3\\br\\fr${name}\\ur"
+						wm_infos="$wm_infos %{F$COLOR_FOCUSED_OCCUPIED_FG}%{B$COLOR_FOCUSED_OCCUPIED_BG}%{U$COLOR_FOREGROUND}%{+u}${name}%{-u}"
 						;;
 					F*)
 						# focused free desktop
-						wm_infos="$wm_infos \\u4\\br\\f7${name}\\ur"
+						wm_infos="$wm_infos %{F$COLOR_FOCUSED_FREE_FG}%{B$COLOR_FOCUSED_FREE_BG}%{U$COLOR_FOREGROUND}%{+u}${name}%{-u}"
 						;;
 					U*)
 						# focused urgent desktop
-						wm_infos="$wm_infos \\u9\\br\\fr${name}\\ur"
+						wm_infos="$wm_infos %{F$COLOR_FOCUSED_URGENT_FG}%{B$COLOR_FOCUSED_URGENT_BG}%{U$COLOR_FOREGROUND}%{+u}${name}%{-u}"
 						;;
 					o*)
 						# occupied desktop
-						wm_infos="$wm_infos \\br\\fr${name}"
+						wm_infos="$wm_infos %{F$COLOR_OCCUPIED_FG}%{B$COLOR_OCCUPIED_BG}${name}"
 						;;
 					f*)
 						# free desktop
-						wm_infos="$wm_infos \\br\\f7${name}"
+						wm_infos="$wm_infos %{F$COLOR_FREE_FG}%{B$COLOR_FREE_BG}${name}"
 						;;
 					u*)
 						# urgent desktop
-						wm_infos="$wm_infos \\b1\\fr${name}"
+						wm_infos="$wm_infos %{F$COLOR_URGENT_FG}%{B$COLOR_URGENT_BG}${name}"
 						;;
 					L*)
 						# layout
 						layout=$(printf "%s" "${name}" | sed 's/\(.\).*/\U\1/')
-						wm_infos="$wm_infos    \\br\\f2$layout"
+						layout="%{F$COLOR_LAYOUT_FG}%{B$COLOR_LAYOUT_BG}$layout"
+                        layout="$lsep $layout $rsep"
+                        wm_infos="$lsep ${wm_infos# } $rsep"
 						;;
 				esac
 				shift
 			done
 			;;
 	esac
-	printf "%s\n" "\\l $wm_infos \\c $title \\r $sys_infos | $battery  "
+    datetime="$lsep $date $csep $time $rsep"
+    battery="$lsep $batbar $rsep"
+    
+	printf "%s\n" "%{l} $layout $wm_infos %{c} $title %{r} $battery $datetime "
 done
