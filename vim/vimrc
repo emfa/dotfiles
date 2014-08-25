@@ -6,10 +6,8 @@ call vundle#begin('~/.config/vim/bundle')
 Plugin 'gmarik/Vundle.vim'
 Plugin 'MarcWeber/vim-addon-mw-utils'
 Plugin 'tomtom/tlib_vim'
-Plugin 'mileszs/ack.vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'altercation/vim-colors-solarized'
-Plugin 'spf13/vim-colors'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-repeat'
 Plugin 'kien/ctrlp.vim'
@@ -20,42 +18,27 @@ Plugin 'matchit.zip'
 Plugin 'bling/vim-airline'
 Plugin 'bling/vim-bufferline'
 Plugin 'Lokaltog/vim-easymotion'
-Plugin 'godlygeek/csapprox'
 Plugin 'jistr/vim-nerdtree-tabs'
-Plugin 'flazz/vim-colorschemes'
 Plugin 'mbbill/undotree'
 Plugin 'mhinz/vim-signify'
 Plugin 'tpope/vim-abolish.git'
 Plugin 'osyo-manga/vim-over'
-Plugin 'kana/vim-textobj-user'
-Plugin 'kana/vim-textobj-indent'
 Plugin 'gcmt/wildfire.vim'
 Plugin 'scrooloose/syntastic'
 Plugin 'tpope/vim-fugitive'
 Plugin 'mattn/gist-vim'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'godlygeek/tabular'
-Plugin 'majutsushi/tagbar'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 Plugin 'elzr/vim-json'
 Plugin 'tpope/vim-markdown'
-Plugin 'spf13/vim-preview'
 Plugin 'tpope/vim-cucumber'
 Plugin 'quentindecock/vim-cucumber-align-pipes'
 Plugin 'jimenezrick/vimerl'
 Plugin 'edkolev/erlang-motions.vim'
-Plugin 'travitch/hasksyn'
-Plugin 'dag/vim2hs'
-Plugin 'Twinside/vim-haskellConceal'
-Plugin 'Twinside/vim-haskellFold'
-Plugin 'lukerandall/haskellmode-vim'
-Plugin 'eagletmt/neco-ghc'
-Plugin 'eagletmt/ghcmod-vim'
-Plugin 'Shougo/vimproc'
-Plugin 'adinapoli/cumino'
-Plugin 'bitc/vim-hdevtools'
+Plugin 'elixir-lang/vim-elixir'
 
 call vundle#end()
 
@@ -66,6 +49,10 @@ set mousehide               " Hide the mouse cursor while typing
 scriptencoding utf-8
 
 set clipboard=unnamed,unnamedplus
+
+set guifont=Terminus\ 12
+set guioptions=
+set guiheadroom=0
 
 set shortmess+=filmnrxoOtT          " Abbrev. of messages (avoids 'hit enter')
 set viewoptions=folds,options,cursor,unix,slash " Better Unix / Windows compatibility
@@ -87,6 +74,8 @@ let g:solarized_termcolors=256
 let g:solarized_termtrans=1
 set background=dark         " Assume a dark background
 color solarized             " Load a colorscheme
+set fillchars+=vert:\ǀ
+hi vertsplit guifg=blue guibg=bg
 
 set tabpagemax=15               " Only show 15 tabs
 set showmode                    " Display the current mode
@@ -263,6 +252,8 @@ let NERDTreeQuitOnOpen=1
 let NERDTreeMouseMode=2
 let NERDTreeShowHidden=1
 let NERDTreeKeepTreeInNewTab=1
+let NERDTreeMinimalUI=1
+let NERDTreeDirArrows=0
 let g:nerdtree_tabs_open_on_gui_startup=0
 
 let g:signify_disable_by_default = 1
@@ -307,18 +298,6 @@ let g:ctrlp_user_command = {
 let g:ctrlp_extensions = ['funky']
 nnoremap <Leader>fu :CtrlPFunky<Cr>
 
-nnoremap <silent> <leader>tt :TagbarToggle<CR>
-let g:tagbar_type_go = {
-\ 'ctagstype' : 'go',
-\ 'kinds'     : [  'p:package', 'i:imports:1', 'c:constants', 'v:variables',
-    \ 't:types',  'n:interfaces', 'w:fields', 'e:embedded', 'm:methods',
-    \ 'r:constructor', 'f:functions' ],
-\ 'sro' : '.',
-\ 'kind2scope' : { 't' : 'ctype', 'n' : 'ntype' },
-\ 'scope2kind' : { 'ctype' : 't', 'ntype' : 'n' },
-\ 'ctagsbin'  : 'gotags',
-\ 'ctagsargs' : '-sort -silent' }
-
 nnoremap <silent> <leader>gs :Gstatus<CR>
 nnoremap <silent> <leader>gd :Gdiff<CR>
 nnoremap <silent> <leader>gc :Gcommit<CR>
@@ -332,8 +311,6 @@ nnoremap <silent> <leader>gi :Git add -p %<CR>
 nnoremap <silent> <leader>gg :SignifyToggle<CR>
 
 let g:acp_enableAtStartup = 0
-
-let g:ycm_collect_identifiers_from_tags_files = 1
 
 let g:UltiSnipsExpandTrigger = '<C-j>'
 let g:UltiSnipsJumpForwardTrigger = '<C-j>'
@@ -355,8 +332,6 @@ let g:wildfire_objects = {
         \ "html,xml" : ["at"] }
 
 let g:airline_theme = 'solarized'
-let g:airline_left_sep='›'  " Slightly fancier than '>'
-let g:airline_right_sep='‹' " Slightly fancier than '<'
 
 function! InitializeDirectories()
     let parent = $HOME

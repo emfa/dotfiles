@@ -1,22 +1,27 @@
 #!/usr/bin/zsh
 
-# Source colors
-source colors
+# Setup desktops
+i=1
+for monitor in $(bspc query -M); do
+bspc monitor $monitor \
+        -n "$i" \
+        -d $i/{1,2,3,4,5,6,7,8,9}
+    let i++
+done
+NMON=$i
+unset i
 
-## Adopt orphan windows
+# Adopt orphans
 bspc control --adopt-orphans
-
-## Setup desktops
-bspc monitor eDP1 -d {1,2,3,4,5,6,7,8,9}
 
 # General
 bspc config auto_alternate true
 bspc config auto_cancel    true
 
 # Visual
-bspc config top_padding	       $BSPWM_PANEL_HEIGHT
-bspc config border_width       0
-bspc config window_gap         5
+bspc config top_padding        14
+bspc config border_width       2
+bspc config window_gap         2
 bspc config split_ratio        0.50
 bspc config borderless_monocle true
 bspc config gapless_monocle    true
@@ -27,28 +32,28 @@ bspc config pointer_follows_monitor true
 
 # Colors
 # Normal
-bspc config focused_border_color 	${blue#??}
-bspc config active_border_color		${violet#??}
-bspc config normal_border_color 	${fg#??}
-bspc config presel_border_color 	${magenta#??}
-bspc config urgent_border_color 	${red#??}
+#
+bspc config normal_border_color  "#839496"
+bspc config focused_border_color "#268bd2"
+bspc config active_border_color  "#93a1a1"
+bspc config presel_border_color  "#859900"
+bspc config urgent_border_color  "#dc322f"
 
-# Locked
-bspc config focused_locked_border_color ${blue#??}
-bspc config active_locked_border_color  ${orange#??}
-bspc config normal_locked_border_color	${orange#??}
+# locked
+bspc config focused_locked_border_color "#859900"
+bspc config active_locked_border_color  "#859900"
+bspc config normal_locked_border_color  "#859900"
 
-# Sticky
-bspc config focused_sticky_border_color ${blue#??}
-bspc config active_sticky_border_color  ${yellow#??}
-bspc config normal_sticky_border_color	${yellow#??}
+# sticky
+bspc config focused_sticky_border_color "#b58900"
+bspc config active_sticky_border_color  "#b58900"
+bspc config normal_sticky_border_color  "#b58900"
 
-# Private
-bspc config focused_private_border_color ${blue#??}
-bspc config active_private_border_color  ${green#??}
-bspc config normal_private_border_color	 ${green#??}
+# private
+bspc config focused_private_border_color "#d33682"
+bspc config active_private_border_color  "#d33682"
+bspc config normal_private_border_color  "#d33682"
 
-# Rules
-bspc rule -a Firefox desktop=^2
+# rules
 
-panel &
+$XDG_CONFIG_HOME/bspwm/panel/panel &

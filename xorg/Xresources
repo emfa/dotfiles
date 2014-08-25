@@ -1,5 +1,5 @@
-Xcursor.theme: Neutral_Plus
-Xcursor.size: 12
+! Colors
+
 ! Solarized colors
 
 ! Common
@@ -12,7 +12,6 @@ Xcursor.size: 12
 #define S_blue          #268bd2
 #define S_cyan          #2aa198
 #define S_green         #859900
-
 
 ! Dark
 
@@ -27,8 +26,6 @@ Xcursor.size: 12
 
 *background:              S_base03
 *foreground:              S_base0
-*fading:                  40
-*fadeColor:               S_base03
 *cursorColor:             S_base1
 *pointerColorBackground:  S_base01
 *pointerColorForeground:  S_base1
@@ -49,3 +46,33 @@ Xcursor.size: 12
 *color13:                 S_violet
 *color14:                 S_base1
 *color15:                 S_base3
+
+! Cursor
+Xcursor.theme: Neutral_Plus
+Xcursor.size: 12
+
+! Urxvt
+URxvt.termName:         rxvt-256color
+URxvt.loginShell:       false
+URxvt.cursorUnderline:  false
+URxvt.cursorBlink:      false
+URxvt.geometry:         90x24
+URxvt.urgentOnBell:     true
+URxvt.scrollBar:        false
+URxvt.scrollBar_right:  false
+URxvt.borderLess:       false
+URxvt.iso14755:         false
+URxvt.saveLines:        1024
+URxvt.intensityStyles:  false
+URxvt.font: xft:Terminus:size=12:style=regular
+
+! Extensions
+URxvt.perl-ext-common: url-select,clipboard,fullscreen,vtwheel
+URxvt.keysym.M-Escape: perl:keyboard-select:activate
+URxvt.keysym.M-u: perl:url-select:select_next
+URxvt.keysym.M-s: perl:keyboard-select:search
+URxvt.keysym.M-c: perl:clipboard:copy
+URxvt.keysym.M-v: perl:clipboard:paste
+URxvt.keysym.M-C-v: perl:clipboard:paste_escaped
+URxvt.keysym.M-f: perl:fullscreen:switch
+URxvt.url-select.launcher: vimprobable2
