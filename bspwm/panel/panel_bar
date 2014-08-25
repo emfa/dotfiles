@@ -1,0 +1,60 @@
+#!/bin/sh
+#
+# Example panel for LemonBoy's bar
+
+. ./config
+
+while read -r line ; do
+    case $line in
+        S*)
+            sys_infos="${line#?} "
+            ;;
+        T*)
+            title=" %{F$BLUE}×%{F-} ${line#?}"
+            ;;
+        W*)
+            wm_infos=""
+            mon=""
+            IFS=':'
+            set -- ${line#?}
+            while [ $# -gt 0 ] ; do
+                item=$1
+                name=${item#?}
+                name=${name/[1-9]\//}
+                case $item in
+                    [OFU]*)
+                        # active desktop
+                        wm_infos="$wm_infos %{U$BLUE}%{+u} $name %{-u}"
+                        ;;
+                    o*)
+                        # inactive but occupied desktop
+                        wm_infos="$wm_infos %{U$BASE0}%{+u} $name %{-u}"
+                        ;;
+                    f*)
+                        # inactive desktop
+                        wm_infos="$wm_infos   "
+                        ;;
+                    u*)
+                        # urgent desktop
+                        wm_infos="$wm_infos %{U$RED}%{+u} $name %{-u}"
+                        ;;
+                    M*)
+                        mon=$((name % 2))
+                        ;;
+                    m*)
+                        if [[ $mon != "" ]] ; then
+                            break
+                        else
+                            shift 10
+                        fi
+                        ;;
+                    *)
+                        ;;
+                esac
+                shift
+            done
+            ;;
+    esac
+    printf "%s\n" "%{S${mon}%{l}${title}%{c}${wm_infos}%{r}${sys_infos}"
+done
+

@@ -1,0 +1,6 @@
+#!/usr/bin/zsh
+
+while true; do
+    sxhkd &
+    bspwm || true
+done
